@@ -1,6 +1,8 @@
 <template>
   <!-- <HelloWorld /> -->
-  <ArmorForm />
+  <v-container fluid>
+    <TabsWrapper />
+  </v-container>
 </template>
 
 <script setup>
