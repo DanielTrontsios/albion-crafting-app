@@ -32,11 +32,14 @@
         solo
       ></v-text-field>
     </template>
-
-    <!-- Calculated Calories * 10 Column -->
     <template v-slot:item.profitTotal="{ item }">
       <v-chip :color="getColor(item)">
-        {{ getProfitTotal(item).toLocaleString("en-US") }}
+        {{ Math.round(getProfitTotal(item)).toLocaleString("en-US") }}
+      </v-chip>
+    </template>
+    <template v-slot:item.profitPerItem="{ item }">
+      <v-chip :color="getColor(item)">
+        {{ Math.round(getProfitPerItem(item)).toLocaleString("en-US") }}
       </v-chip>
     </template>
   </v-data-table>
@@ -146,12 +149,13 @@ export default {
   methods: {
     getColor(item) {
       const totalProfit = this.getProfitTotal(item);
+      const totalCost = this.getResourceCostTotal(item);
       if (totalProfit < 0) return "red";
-      // else if (totalProfit > 50) return "orange";
+      else if (totalProfit < totalCost * 0.05) return "orange";
       else return "green";
     },
     getFeePerItem(item) {
-      return Math.round(this.feePercent * item.itemValue * (5 / 100));
+      return this.feePercent * item.itemValue * (5 / 100);
     },
     getResourceCostPerItem(item) {
       return (
@@ -166,11 +170,11 @@ export default {
     },
     getProfitPerItem(item) {
       const resourceCostPerItem = this.getResourceCostPerItem(item);
-      return Math.round(
+      return (
         item.productPrice -
-          resourceCostPerItem +
-          (resourceCostPerItem / 100) * this.formData.returnRate -
-          this.getFeePerItem(item)
+        resourceCostPerItem +
+        (resourceCostPerItem / 100) * this.formData.returnRate -
+        this.getFeePerItem(item)
       );
     },
     getProfitTotal(item) {
