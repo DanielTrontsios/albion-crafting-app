@@ -1,7 +1,8 @@
 <template>
   <ArmorForm :initialData="formData" @update-data="updateData" />
+  <TableView :formData="formData" />
 
-  <v-expansion-panels multiple>
+  <!-- <v-expansion-panels multiple>
     <v-expansion-panel>
       <ItemRow :formData="formData" :itemInfo="helmetInfo" />
     </v-expansion-panel>
@@ -11,7 +12,7 @@
     <v-expansion-panel>
       <ItemRow :formData="formData" :itemInfo="bootsInfo" />
     </v-expansion-panel>
-  </v-expansion-panels>
+  </v-expansion-panels> -->
 </template>
 <script>
 export default {

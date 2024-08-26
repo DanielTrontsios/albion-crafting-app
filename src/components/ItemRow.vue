@@ -14,7 +14,7 @@
 
       <v-col>
         <v-text-field
-          v-model="productPriceLocal"
+          v-model="productPrice"
           label="Product Price"
           type="number"
           required
@@ -23,7 +23,7 @@
 
       <v-col>
         <v-text-field
-          v-model="artifactPriceLocal"
+          v-model="artifactPrice"
           label="Artifact Price"
           type="number"
           required
@@ -70,12 +70,12 @@ export default {
       required: true,
     },
   },
-  data: () => ({ artifactPriceLocal: 0, productPriceLocal: 0 }),
+  data: () => ({ artifactPrice: 0, productPrice: 0 }),
   computed: {
     resourceCostPerItem() {
       return (
         this.itemInfo.resourcesPer * this.formData.resourcePrice +
-        this.itemInfo.artifactsPer * this.artifactPriceLocal
+        this.itemInfo.artifactsPer * this.artifactPrice
       );
     },
     resourceCostTotal() {
@@ -92,7 +92,7 @@ export default {
     },
     profitPerItem() {
       return Math.round(
-        this.productPriceLocal -
+        this.productPrice -
           this.resourceCostPerItem +
           (this.resourceCostPerItem / 100) * this.formData.returnRate -
           this.feePerItem

@@ -20,21 +20,13 @@
         </v-col>
         <v-col cols="12" md="3">
           <v-text-field
-            v-model="localData.itemValue"
-            label="Item Value"
-            type="number"
-            required
-          ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="3">
-          <v-text-field
             v-model="localData.returnRate"
             label="Return Rate"
             type="number"
             required
           ></v-text-field>
         </v-col>
-        <v-col cols="12">
+        <v-col cols="12" md="3">
           <v-text-field
             v-model="localData.numberOfItemsToCraft"
             label="Number Of Items To Craft"
