@@ -42,6 +42,21 @@
         {{ Math.round(getProfitPerItem(item)).toLocaleString("en-US") }}
       </v-chip>
     </template>
+    <template v-slot:item.resouceCostPerItem="{ item }">
+      <v-chip>
+        {{ Math.round(getResourceCostPerItem(item)).toLocaleString("en-US") }}
+      </v-chip>
+    </template>
+    <template v-slot:item.craftingFeePerItem="{ item }">
+      <v-chip>
+        {{ Math.round(getCraftingFeePerItem(item)).toLocaleString("en-US") }}
+      </v-chip>
+    </template>
+    <template v-slot:item.setupFeePerItem="{ item }">
+      <v-chip>
+        {{ Math.round(getSetupFeePerItem(item)).toLocaleString("en-US") }}
+      </v-chip>
+    </template>
   </v-data-table>
 </template>
 
@@ -65,6 +80,9 @@ export default {
       { title: "Item Value", key: "itemValue" }, // New column
       { title: "Profit Total", key: "profitTotal" },
       { title: "Profit Per Item", key: "profitPerItem" },
+      { title: "Resource Cost Per Item", key: "resouceCostPerItem" },
+      { title: "Crafting Fee Per Item", key: "craftingFeePerItem" },
+      { title: "Setup Fee Per Item", key: "setupFeePerItem" },
     ],
     items: [
       {
@@ -154,12 +172,17 @@ export default {
       else if (totalProfit < totalCost * 0.05) return "orange";
       else return "green";
     },
-    getFeePerItem(item) {
-      return this.feePercent * item.itemValue * (5 / 100);
+    getCraftingFeePerItem(item) {
+      return this.feePercent * item.itemValue * 0.05;
+    },
+    getSetupFeePerItem(item) {
+      return item.productPrice * 0.65;
     },
     getResourceCostPerItem(item) {
       return (
-        item.resourcesPer * this.formData.resourcePrice +
+        (item.resourcesPer -
+          item.resourcesPer * (this.formData.returnRate / 100)) *
+          this.formData.resourcePrice +
         item.artifactsPer * item.artifactPrice
       );
     },
@@ -172,9 +195,9 @@ export default {
       const resourceCostPerItem = this.getResourceCostPerItem(item);
       return (
         item.productPrice -
-        resourceCostPerItem +
-        (resourceCostPerItem / 100) * this.formData.returnRate -
-        this.getFeePerItem(item)
+        resourceCostPerItem -
+        this.getCraftingFeePerItem(item) -
+        item.productPrice * 0.65
       );
     },
     getProfitTotal(item) {
